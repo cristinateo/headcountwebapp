@@ -1,8 +1,8 @@
-
 import React, { Component } from 'react'
 import 'bulma/css/bulma.css'
 import { connect } from 'react-redux'
 import { addTodo, toggleTodo, deleteTodo, fetchTodos } from './actions/todos';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Todo = ({ todo, id, onDelete, onToggle }) => (
   <div className="box todo-item level is-mobile">
@@ -45,37 +45,91 @@ class Todos extends Component {
     const incomplete = todos.filter((todo) => !todo.done).length
 
     return (
-      <section className="section full-column">
-        <h1 className="title white">Todos</h1>
-        <div className="error">{error}</div>
+        <section>
+          {/* <h1 className="title white">Todos</h1> */}
+          {/* <div className="error">{error}</div> */}
 
-        <form className="form" onSubmit={this.addTodo.bind(this)}>
-          <div className="field has-addons" style={{ justifyContent: 'center' }}>
-            <div className="control">
-              <input className="input"
-                     value={newTodo}
-                     placeholder="New todo"
-                     onChange={(e) => this.setState({ newTodo: e.target.value })}/>
+          <nav class="navbar is-info">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+                </img></a>
+                <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
+            <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-start is-link">
+                    <a class="navbar-item" href="">
+                        Home
+                    </a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="/documentation/overview/start/">
+                            Docs
+                        </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="admin.html">
+                                Admin
+                            </a>
+                            <a class="navbar-item" href="forum.html">
+                                Forum
+                            </a>
+                            <a class="navbar-item" href="cover.html">
+                                Cover
+                            </a>
+                            <a class="navbar-item" href="cards.html">
+                                Cards
+                            </a>
+                            <a class="navbar-item" href="blog.html">
+                                Blog
+                            </a>
+                            <hr class="navbar-divider"></hr>
+                            <a class="navbar-item" href="search.html">
+                                Search
+                            </a>
+                            <a class="navbar-item is-active" href="kanban.html">
+                                Kanban
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-            <div className="control">
-              <button className={`button is-success ${(isLoading || isSaving) && "is-loading"}`}
-                      disabled={isLoading || isSaving}>Add</button>
+          <form className="form" onSubmit={this.addTodo.bind(this)}>
+            <div className="field has-addons" style={{ justifyContent: 'center' }}>
+              <div className="control">
+                <input className="input"
+                      value={newTodo}
+                      placeholder="New todo"
+                      onChange={(e) => this.setState({ newTodo: e.target.value })}/>
+              </div>
+
+              <div className="control">
+                <button className={`button is-success ${(isLoading || isSaving) && "is-loading"}`}
+                        disabled={isLoading || isSaving}>Add</button>
+              </div>
+            </div>
+          </form>
+
+          <div className="container todo-list">
+            {todos.map((todo) => <Todo key={todo._id}
+                                      id={todo._id}
+                                      todo={todo}
+                                      onDelete={() => deleteTodo(todo._id)}
+                                      onToggle={() => toggleTodo(todo._id)}/> )}
+            <div className="white">
+              Total: {total}  , Complete: {complete} , Incomplete: {incomplete}
             </div>
           </div>
-        </form>
 
-        <div className="container todo-list">
-          {todos.map((todo) => <Todo key={todo._id}
-                                     id={todo._id}
-                                     todo={todo}
-                                     onDelete={() => deleteTodo(todo._id)}
-                                     onToggle={() => toggleTodo(todo._id)}/> )}
-          <div className="white">
-            Total: {total}  , Complete: {complete} , Incomplete: {incomplete}
-          </div>
-        </div>
-      </section>
+        </section>
     );
   }
 }

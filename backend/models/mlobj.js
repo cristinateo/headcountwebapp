@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
  // Declare Schema
  const MLObjSchema = new mongoose.Schema(
    {
-     year: { type: Number },
-     month: { type: String },
-     cases: { type: Number },
-     IR: { type: Number },
-     region: { type: String }
+    "Inputs": {
+      "input1": {
+        "ColumnNames": [],
+        "Values": [[]]
+      }
+    },
+    "Global Variables": {}
    }, 
    { timestamps: true }
  );

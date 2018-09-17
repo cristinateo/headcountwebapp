@@ -143,3 +143,6 @@ docs
 
 ### SQLite3 ###
 /sqlite3
+
+#Ignore Node Modules
+node-modules/
