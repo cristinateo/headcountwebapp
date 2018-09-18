@@ -101,6 +101,7 @@ class Todos extends Component {
                 </div>
             </div>
         </nav>
+        
 
           <form className="form" onSubmit={this.addTodo.bind(this)}>
             <div className="field has-addons" style={{ justifyContent: 'center' }}>
