@@ -1,0 +1,125 @@
+.banner-container {
+    position: relative;
+    width: 100%;
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.top-right {
+    position: absolute;
+    width: 35%;
+    top: 5%;
+    right: 0px;
+    text-align: center;
+}
+
+.img-fluid {
+    width: 100%;
+    position: relative;
+    height: auto;
+}
+
+.navigation-bar {
+    position: relative;
+    top: 5%;
+    right: 10%;
+}
+
+.nav-container {
+    text-align: center;
+    width: 10%;
+    size: 15px;
+}
+
+.prediction-container {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.left-container {
+    width: 15%;
+    /* position: fixed; */
+    /* z-index: 1; */
+    /* top: 0; */
+    /* overflow-x: hidden; */
+    padding-top: 20px;
+}
+
+.right-container {
+    width: 85%;
+    /* position: fixed; */
+    /* z-index: 1; */
+    /* top: 0; */
+    /* overflow-x: hidden; */
+    padding-top: 20px;
+}
+
+.form-control{
+    width: 10px;
+}
+
+a {
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    color:#f1575f;
+}
+  
+  a.grow::after {
+    content:"";
+    height:4px;
+    width:0;
+    background-color:#f1575f;
+    position:absolute;
+    bottom:0;
+    left:0;
+    transition:width 500ms ease;
+  }
+  
+  a.grow:hover::after {
+    width:100%;
+    text-decoration: none;
+  }
+
+  a.grow:link, a.grow:hover {
+      text-decoration: none;
+  }
+
+  a.grow:hover {
+    text-decoration: none;
+}
+
+a.grow:visited{
+    text-decoration: none ;
+    color: white;
+}
+
+a.grow:visited > hover{
+    text-decoration: none ;
+    color: white;
+}
+
+.select-year {
+    border: 1px solid coral;
+}
+
+.select-year:hover {
+    background-color: none;
+}
+
+.banner {
+    margin-right: 0;
+    margin-left: 0;
+    width: inherit;
+    background: orangered;
+    padding: 50px;
+    text-align: left;
+}
+
+.navbar-form {
+    text-align: right;
+}

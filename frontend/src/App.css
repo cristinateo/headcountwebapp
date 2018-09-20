@@ -1,12 +1,5 @@
 html {
-  background-color: black;
-}
-
-/* Container for dashboards and navbar */
-container {
-  background-color: black;
-  margin-left: 25%;
-  margin-right: 25%;
+  background-color: white;
 }
 
 navbar {
@@ -14,7 +7,7 @@ navbar {
 }
 
 body {
-  background: rgb(250, 89, 14);
+  background: rgb(255, 255, 255);
 }
 
 .App {
