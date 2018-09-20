@@ -110,7 +110,7 @@ class Todos extends Component {
                   <div class="row">
                     <div class="left-container">
                     <div class="row">
-                        <div class="select is-danger">
+                      <div class="styled-select">
                           <select id="year">
                               <option value="2019">2019</option>
                               <option value="2020">2020</option>
@@ -127,7 +127,7 @@ class Todos extends Component {
                     </div>
 
                     <div class="row">
-                      <div class="select is-danger">
+                      <div class="styled-select">
                           <select id="month">
                               <option value="January">January</option>
                               <option value="February">February</option>
@@ -160,7 +160,7 @@ class Todos extends Component {
                     </div>
 
                     <div class="row">
-                      <div class="select is-danger">
+                      <div class="styled-select">
                         <select id="region">
                             <option value="EMEA">EMEA</option>
                             <option value="US">US</option>

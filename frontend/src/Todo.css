@@ -36,29 +36,47 @@
 
 .prediction-container {
     margin-left: 5%;
-    margin-right: 5%;
+    margin-right: 2%;
 }
 
 .left-container {
-    width: 15%;
-    /* position: fixed; */
-    /* z-index: 1; */
-    /* top: 0; */
-    /* overflow-x: hidden; */
+    width: 10%;
+    left: 0;
     padding-top: 20px;
 }
 
 .right-container {
-    width: 85%;
-    /* position: fixed; */
-    /* z-index: 1; */
-    /* top: 0; */
-    /* overflow-x: hidden; */
+    width: 80%;
+    right: 0;
     padding-top: 20px;
 }
 
 .form-control{
-    width: 10px;
+    width: 120px !important;
+    border: 1px solid #f1575f !important;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+    height: 45px !important;
+    padding: 10px !important;
+    width: 120px !important;
+    margin-bottom: 5px;
+}
+
+
+.styled-select select {
+    background: transparent !important;
+    border: 1px solid #f1575f !important;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+    height: 45px !important;
+    padding: 10px !important;
+    width: 120px !important;
+    margin-bottom: 5px;
+}
+
+.button {
+    height: 45px !important;
+    width: 120px !important;
 }
 
 a {
@@ -123,3 +141,46 @@ a.grow:visited > hover{
 .navbar-form {
     text-align: right;
 }
+
+header {
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    color:#f1575f;
+}
+  
+    /* header.grow::after {
+        content:"";
+        height:4px;
+        width:0;
+        background-color:#f1575f;
+        position:absolute;
+        bottom:0;
+        left:0;
+        transition:width 500ms ease;
+    }
+  
+    header.grow:hover::after {
+        width:100%;
+        text-decoration: none;
+    }
+
+    header.grow:link, a.grow:hover {
+        text-decoration: none;
+    }
+
+    header.grow:hover {
+        text-decoration: none;
+    }
+
+    header.grow:visited{
+        text-decoration: none ;
+        color: white;
+    } */
+
+    /* header.grow:visited > hover{
+        text-decoration: none ;
+        color: white;
+    } */
+
