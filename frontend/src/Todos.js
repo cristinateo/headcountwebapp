@@ -6,10 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ScrollableAnchor from 'react-scrollable-anchor'
 import { configureAnchors } from 'react-scrollable-anchor'
 
-function isFloat(n) {
-  return /^\d+$/.test(n)
-}
-
 function isNan(n) {
   return /^\d+$/.test(n)
 }
@@ -34,17 +30,15 @@ class Todos extends Component {
       }, "Global Variables": {}
     }
 
-    this.mlResponse = []
   }
 
   componentDidMount() {
     
   }
 
+
   handleSubmit = event => {
     event.preventDefault();
-
-    console.log(event)
 
     var yr = document.getElementById('year');
     var currentYear = yr.options[yr.selectedIndex].value;
@@ -66,7 +60,7 @@ class Todos extends Component {
           Values: [[currentYear, currentMonth, currentCases, currentIR, currentRegion]]}}, "Global Variables": {}
     })
 
-    const siteurl = process.env.NODE_ENV==="production"?"/api/getml":"http://localhost:4000/getml";
+    const siteurl = process.env.NODE_ENV==="production"?"/getml":"http://localhost:4000/getml";
 
     var dat = {
       Inputs: {
@@ -101,9 +95,7 @@ class Todos extends Component {
       .catch(error => {
         throw error;
       });
-
     }
-
   }
 
   render() {
@@ -188,7 +180,7 @@ class Todos extends Component {
                     <div className="col-sm-2 col-md-2 col-lg-2 col-xl-2">
                       <div className="row">
                         <div className="styled-select">
-                          <select id="year">
+                          <select id = "year">
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>
