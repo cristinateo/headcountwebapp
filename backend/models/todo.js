@@ -2,10 +2,15 @@ const mongoose = require('mongoose')
  
  // Declare Schema
  const TodoSchema = new mongoose.Schema(
-   {
-     description: { type: String },
-     done: { type: Boolean },
-   }, 
+  {
+    "Inputs": {
+      "input1": {
+        "ColumnNames": [],
+        "Values": [[]]
+      }
+    },
+    "Global Variables": {}
+   },
    { timestamps: true }
  );
  

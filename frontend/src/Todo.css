@@ -34,9 +34,16 @@
     size: 15px;
 }
 
+p.b {
+    font-style: italic !important;
+}
+
+h2.b {
+    font-style: italic !important;
+}
+
 .prediction-container {
-    margin-left: 5%;
-    margin-right: 2%;
+    margin-left: 2.5%;
 }
 
 .left-container {
@@ -46,14 +53,15 @@
 }
 
 .right-container {
-    width: 80%;
+    width: 90%;
     right: 0;
     padding-top: 20px;
 }
 
 .form-control{
     width: 120px !important;
-    border: 1px solid #f1575f !important;
+    border: 1.5px solid #ff8000 !important;
+    background: white !important;
     border-radius: 5px !important;
     font-size: 14px !important;
     height: 45px !important;
@@ -61,11 +69,11 @@
     width: 120px !important;
     margin-bottom: 5px;
 }
-
 
 .styled-select select {
     background: transparent !important;
-    border: 1px solid #f1575f !important;
+    border: 1.5px solid #ff8000 !important;
+    background: #ffe7b3;
     border-radius: 5px !important;
     font-size: 14px !important;
     height: 45px !important;
@@ -74,24 +82,43 @@
     margin-bottom: 5px;
 }
 
-.button {
+.buttoncl {
     height: 45px !important;
     width: 120px !important;
+    border: 1.5px solid #ff8000 !important;
+    border-radius: 5px !important;
+    background: #ffe7b3 !important;
+    font-weight:bold;
 }
 
-a {
+.buttoncl:hover {
+    border: 1.5px solid orangered !important;
+    background: #ffdf99 !important;
+    font-weight:bold;
+}
+
+.submit:hover {
+    height: 45px !important;
+    width: 120px !important;
+    border: 1.5px solid #ff8000 !important;
+    border-radius: 5px !important;
+    background: #ffdf99 !important;
+}
+
+a, a:hover {
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
     text-decoration: none;
     font-weight: bold;
+    font-size: 14px;
     position: relative;
-    color:#f1575f;
+    color: white !important;
 }
-  
+
   a.grow::after {
     content:"";
-    height:4px;
+    height:2.5px;
     width:0;
-    background-color:#f1575f;
+    background-color: #ff8000;
     position:absolute;
     bottom:0;
     left:0;
@@ -121,14 +148,6 @@ a.grow:visited > hover{
     color: white;
 }
 
-.select-year {
-    border: 1px solid coral;
-}
-
-.select-year:hover {
-    background-color: none;
-}
-
 .banner {
     margin-right: 0;
     margin-left: 0;
@@ -142,45 +161,47 @@ a.grow:visited > hover{
     text-align: right;
 }
 
-header {
+h1 span {
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
-    text-decoration: none;
+    /* border-bottom: 4px solid #922fda; */
+    font-size: 30px;
+    color: black;
     font-weight: bold;
-    position: relative;
-    color:#f1575f;
 }
-  
-    /* header.grow::after {
-        content:"";
-        height:4px;
-        width:0;
-        background-color:#f1575f;
-        position:absolute;
-        bottom:0;
-        left:0;
-        transition:width 500ms ease;
-    }
-  
-    header.grow:hover::after {
-        width:100%;
-        text-decoration: none;
-    }
 
-    header.grow:link, a.grow:hover {
-        text-decoration: none;
-    }
+.content {
+    margin-left: 10%;
+    margin-right: 10%;
+}
 
-    header.grow:hover {
-        text-decoration: none;
-    }
+.row-space {
+    width: 100%;
+    height: 60px;
+}
 
-    header.grow:visited{
-        text-decoration: none ;
-        color: white;
-    } */
+.randcontainer {
+    margin-left: 15%;
+    margin-right: 15%;
+}
 
-    /* header.grow:visited > hover{
-        text-decoration: none ;
-        color: white;
-    } */
+.row-space2 {
+    width: 100%;
+    height: 30px;
+}
 
+.row-back {
+    right: 0px;
+    text-align: right;
+}
+
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}

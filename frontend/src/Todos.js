@@ -5,311 +5,281 @@ import { addTodo, toggleTodo, deleteTodo, fetchTodos } from './actions/todos';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ScrollableAnchor from 'react-scrollable-anchor'
 import { configureAnchors } from 'react-scrollable-anchor'
-import 'bulma/css/bulma.css'
- 
-// Offset all anchors by -60 to account for a fixed header
-// and scroll more quickly than the default 400ms
-configureAnchors({offset: -60, scrollDuration: 200})
 
-const Todo = ({ todo, id, onDelete, onToggle }) => (
-  <div className="box todo-item level is-mobile">
-    <div className="level-left">
-      <label className={`level-item todo-description ${todo.done && 'completed'}`}>
-        <input className="checkbox" type="checkbox" checked={todo.done} onChange={onToggle}/>
-        <span>{todo.description}</span>
-      </label>
-    </div>
-    <div className="level-right">
-      <a className="delete level-item" onClick={onDelete}>Delete</a>
-    </div>
-  </div>
-)
+function isFloat(n) {
+  return /^\d+$/.test(n)
+}
+
+function isNan(n) {
+  return /^\d+$/.test(n)
+}
+
+const axios = require('axios')
+
+configureAnchors({ offset: -60, scrollDuration: 200 })
 
 class Todos extends Component {
-  // state = { newTodo: '' }
 
-  // componentDidMount() {
-  //   this.props.fetchTodos()
-  // }
+  constructor(props) {
+    super(props)
+    this.namex = "Gorgica"
+    this.state = {
+      coolData: null,
+      reallycoolData: null,
+      Inputs: {
+        input1: {
+          ColumnNames: ["Year", "Month", "Cases", "IR", "Region"],
+          Values: [["2019", "January", "243", "0.9523", "EMEA"]]
+        }
+      }, "Global Variables": {}
+    }
 
-  // addTodo (event) {
-  //   event.preventDefault() // Prevent form from reloading page
-  //   const { newTodo } = this.state
+    this.mlResponse = []
+  }
 
-  //   if(newTodo) {
-  //     const todo = { description: newTodo, done: false }
-  //     this.props.addTodo(todo)
-  //     this.setState({ newTodo: '' })
-  //   }
-  // }
+  componentDidMount() {
+    
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    console.log(event)
+
+    var yr = document.getElementById('year');
+    var currentYear = yr.options[yr.selectedIndex].value;
+
+    var mn = document.getElementById('month');
+    var currentMonth = mn.options[mn.selectedIndex].value;
+
+    var currentCases = document.getElementById('cases').value;
+
+    var currentIR = document.getElementById('IR').value;
+
+    var reg = document.getElementById('region');
+    var currentRegion = reg.options[reg.selectedIndex].value;
+
+    this.setState({
+      Inputs: {
+        input1: {
+          ColumnNames: ["Year", "Month", "Cases", "IR", "Region"],
+          Values: [[currentYear, currentMonth, currentCases, currentIR, currentRegion]]}}, "Global Variables": {}
+    })
+
+    const siteurl = process.env.NODE_ENV==="production"?"/api/getml":"http://localhost:4000/getml";
+
+    var dat = {
+      Inputs: {
+        input1:
+        {
+          ColumnNames: ["Year", "Month", "Cases", "IR", "Region"],
+          Values: [["2019", "April", "300", "0.97", "EMEA"]]
+        },
+      },
+      GlobalParameters: {}
+    }
+
+    dat = this.state
+
+    if (currentIR < 0.30 || currentIR > 0.99) {
+      this.setState({reallycoolData: "please insert a realistic IR"})
+      this.setState({coolData: null})
+
+    }else if(!(isNan(currentCases)) || currentCases < 200 || currentCases > 1000) {
+      this.setState({reallycoolData: "please insert a valid case number"})
+      this.setState({coolData: null})
+    } else {
+
+    axios.post(siteurl, dat)
+      .then((response)=>{
+        console.log(response.data)
+        var mlDat = response.data.Results.output1.value.Values[0][5]
+        this.setState({coolData:mlDat})
+        var s = mlDat.substring(0, mlDat.indexOf('.'));
+        this.setState({reallycoolData: s})
+      })
+      .catch(error => {
+        throw error;
+      });
+
+    }
+
+  }
 
   render() {
-    // let { newTodo } = this.state
-    // const { todos, isLoading, isSaving, error, deleteTodo, toggleTodo } = this.props
-
-    // const total = todos.length
-    // const complete = todos.filter((todo) => todo.done).length
-    // const incomplete = todos.filter((todo) => !todo.done).length
 
     return (
       <body>
-        <section class="main-container">
-          <div class="banner-container">
-            <img src="https://preview.ibb.co/hxpmuz/banner.jpg" class="img-fluid" alt="Snow">
-            </img>
-            <div class="top-right">
-            <div id="nav">
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                  <a href="#headline1" class="grow">MOTIVATION</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                  <a href="#headline4" class="grow">HISTORICAL DATA</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                  <a href="#headline5" class="grow">PREDICTION</a>
+        <section className="main-container">
+          <ScrollableAnchor id={'start'}>
+            <div className="banner-container">
+              <img src="https://storagehea.blob.core.windows.net/headcountbanner/headcount_banner.jpg" className="img-fluid" alt="Snow">
+              </img>
+              <div className="top-right">
+                <div id="nav">
+                  <div className="row">
+                    <div className="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <a href="#motivation" className="grow">MOTIVATION</a>
+                    </div>
+                    <div className="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <a href="#histdata" className="grow">HISTORICAL DATA</a>
+                    </div>
+                    <div className="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <a href="#prediction" className="grow">PREDICTION</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
-          </div> 
+          </ScrollableAnchor>
 
-          <section class="content">
+          <section className="content">
 
-            <ScrollableAnchor id={'headline1'}>
+            <div className="row-space"></div>
+            <ScrollableAnchor id={'motivation'}>
               <div>
-                <h1>Headline One</h1>
-                <p>This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
+                <h1><span>Our Mission</span></h1>
+                <p class="b">The future belongs to those who prepare for it today!</p>
+                  <p align="justify"> In today's rapidly evolving world, a business needs to anticipate the number of employees that are required to efficiently handle its workload.
+                  Imagine having a tool that helps your organization do just that, by predicting how many new hires will be required in the future.
+                  Our app is built on cutting edge Microsoft and cloud-based technologies and it incorporates the analysis of historical data about your company, 
+                  which will then be used to predict your hiring need in years to come.
+                  Prepare your business to do good in the future, because doing good is just good business.
                 </p>
+                <div className="row">
+                  <div className="col-sm-11"></div>
+                  <div className="col-sm-1">
+                    <a href="#start"><i className="arrow up"></i></a>
+                  </div>
+                </div>
               </div>
             </ScrollableAnchor>
-            
-            <ScrollableAnchor id={'headline2'}>
+
+            <div className="row-space"></div>
+            <ScrollableAnchor id={'histdata'}>
               <div>
-                <h1>Headline 2</h1>
-                <p>This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                </p>
+                <h1><span>Collected data insights</span></h1>
+                <p align="justify">
+                Through this dashboard you can visualize the hiring need for the next 10 years in comparison with the historical data from past 10 years.
+                The user can easily interact with the reports in the dashboard by selecting specific data from various slicers, in order to filter the visualizations.  
+                  </p>
+                <div class="randcontainer">
+                  <iframe width="700" height="400" src="https://msit.powerbi.com/view?r=eyJrIjoiNDgxZTA0MWEtY2I4Yy00YmUzLThkNDktMDNjZGRiMGI1Mjc0IiwidCI6IjcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0NyIsImMiOjV9" frameborder="0" allowFullScreen="true"></iframe> 
+                </div>
+                
+                <div className="row">
+                  <div className="col-sm-11"></div>
+                  <div className="col-sm-1">
+                    <a href="#start"><i className="arrow up"></i></a>
+                  </div>
+                </div>
               </div>
             </ScrollableAnchor>
-            
-            <ScrollableAnchor id={'headline3'}>
+
+            <div className="row-space"></div>
+            <ScrollableAnchor id={'prediction'}>
               <div>
-                <h1>Headline 3</h1>
-                <p>This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                </p>
-              </div>
-            </ScrollableAnchor>
-            
-            <ScrollableAnchor id={'headline4'}>
-              <div>
-                <h1>Headline 4</h1>
-                <div class="prediction-container">
-                  <div class="row">
-                    <div class="left-container">
-                    <div class="row">
-                      <div class="styled-select">
+                <h1><span>Machine Learning enhanced prediction</span></h1>
+                <div className="row-space2"></div>
+
+
+                <div className="prediction-container">
+                  <div className="row">
+                    <div className="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                      <div className="row">
+                        <div className="styled-select">
                           <select id="year">
-                              <option value="2019">2019</option>
-                              <option value="2020">2020</option>
-                              <option value="2021">2021</option>
-                              <option value="2022">2022</option>
-                              <option value="2023">2023</option>
-                              <option value="2024">2024</option>
-                              <option value="2025">2025</option>
-                              <option value="2026">2026</option>
-                              <option value="2027">2027</option>
-                              <option value="2028">2028</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="styled-select">
-                          <select id="month">
-                              <option value="January">January</option>
-                              <option value="February">February</option>
-                              <option value="March">March</option>
-                              <option value="April">April</option>
-                              <option value="May">May</option>
-                              <option value="June">June</option>
-                              <option value="July">July</option>
-                              <option value="August">August</option>
-                              <option value="September">September</option>
-                              <option value="October">October</option>
-                              <option value="November">November</option>
-                              <option value="December">December</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
                           </select>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="row">
-                      <div>
-                        <input type="cases" class="form-control" id="cases" placeholder="300">
-                        </input>
+                      <div className="row">
+                        <div className="styled-select">
+                          <select id="month">
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="row">
-                      <div>
-                        <input type="SLA" class="form-control" id="SLA" placeholder="0.97">
-                        </input>
+                      <div className="row">
+                        <div>
+                          <input type="cases" className="form-control" id="cases" placeholder="300">
+                          </input>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="row">
-                      <div class="styled-select">
-                        <select id="region">
+                      <div className="row">
+                        <div>
+                          <input type="IR" className="form-control" id="IR" placeholder="0.97">
+                          </input>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="styled-select">
+                          <select id="region">
                             <option value="EMEA">EMEA</option>
                             <option value="US">US</option>
                             <option value="APAC">APAC</option>
-                        </select>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="control">
+                          <form onSubmit={this.handleSubmit}>
+                              <input type="submit" value="Submit" class="buttoncl"></input>
+                          </form>
+                        </div>
                       </div>
                     </div>
 
-                    <div class="row">
-                      <div class="control">
-                        <button class="button is-danger">Submit</button>
-                      </div>
+                    <div className="col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                      <div className="row"></div>
+                      <p align="justify">Please complete the form and press the submit button to verify the necessary number of engineers for the
+                      custom workload and chosen parameters.</p>
+
+                      <h3>Estimated need: {this.state.reallycoolData}</h3>
+                      <p class="b">To be precise: {this.state.coolData}</p>
+
                     </div>
                   </div>
-                    
-                    <div class="right-container">
-                      <p>This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                      This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                      </p>
+
+                  <div className="row">
+                    <div className="col-sm-11"></div>
+                    <div className="col-sm-1">
+                      <a href="#start"><i className="arrow up"></i></a>
                     </div>
                   </div>
+
                 </div>
               </div>
             </ScrollableAnchor>
-
-            <ScrollableAnchor id={'headline5'}>
-              <div>
-                <h1>Headline 5</h1>
-                <p>This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books. One of the first things learned in comics is how to use dialogue bubbles effectively; a writer not allocating space carefully will end up covering their panel with a bunch of text and white space. Eventually the reader will realize that they're just looking at plain text rather than the vivid form of storytelling by imagery that comic books are famed for. TL;DR indeed.
-                This afflicts all written media, but it is particularly infamous for its effect on Comic Books.
-                </p>
-              </div>        
-            </ScrollableAnchor>
-          </section> 
-
+          </section>
         </section>
 
       </body>
-
-        // <nav class="navbar is-danger">
-        //     <div class="navbar-brand">
-        //         <a class="navbar-item" href="#">
-        //             <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
-        //             </img>
-        //         </a>
-        //         <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
-        //             <span></span>
-        //             <span></span>
-        //             <span></span>
-        //         </div>
-        //     </div>
-        // </nav>
-
-        // <section class="hero is-danger">
-        //     <div class="hero-body">
-        //         <div class="container">
-        //             <h1 class="title">
-                    
-        //             </h1>
-        //             <h2 class="subtitle">
-                    
-        //             </h2>
-        //         </div>
-        //     </div>
-        //     <div class="tabs is-centered main-menu" id="nav">
-        //         <ul>
-        //             <li data-target="pane-1" id="1" class="is-active">
-        //                 <a>
-        //                     <span class="icon is-small"><i class="fa fa-image"></i></span>
-        //                     <span>Purpose</span>
-        //                 </a>
-        //             </li>
-        //             <li data-target="pane-2" id="2">
-        //                 <a>
-        //                     <span class="icon is-small"><i class="fab fa-empire"></i></span>
-        //                     <span>Article</span>
-        //                 </a>
-        //             </li>
-        //             <li data-target="pane-3" id="3">
-        //                 <a>
-        //                     <span class="icon is-small"><i class="fab fa-superpowers"></i></span>
-        //                     <span>Team</span>
-        //                 </a>
-        //             </li>
-        //         </ul>
-        //     </div>
-        //   </section>
-
-        //   <section class="container">
-        //     <div class="col-sm-8">
-        //       hi
-        //     </div>
-        //     <div class="col-sm-2">
-        //       hi
-        //     </div>
-        //   </section>
-
-        //   <section>
-        //     <form className="form" onSubmit={this.addTodo.bind(this)}>
-        //       <div className="field has-addons" style={{ justifyContent: 'center' }}>
-        //         <div className="control">
-        //           <input className="input"
-        //                 value={newTodo}
-        //                 placeholder="New todo"
-        //                 onChange={(e) => this.setState({ newTodo: e.target.value })}/>
-        //         </div>
-
-        //         <div className="control">
-        //           <button className={`button is-success ${(isLoading || isSaving) && "is-loading"}`}
-        //                   disabled={isLoading || isSaving}>Add</button>
-        //         </div>
-        //       </div>
-        //     </form>
-
-        //     <div className="container todo-list">
-        //       {todos.map((todo) => <Todo key={todo._id}
-        //                                 id={todo._id}
-        //                                 todo={todo}
-        //                                 onDelete={() => deleteTodo(todo._id)}
-        //                                 onToggle={() => toggleTodo(todo._id)}/> )}
-        //       <div className="white">
-        //         Total: {total}  , Complete: {complete} , Incomplete: {incomplete}
-        //       </div>
-        //     </div>
-        //   </section>
     );
   }
 }

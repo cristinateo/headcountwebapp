@@ -1,42 +1,55 @@
 const Todo = require('../models/todo')
+const axios = require('axios')
 
-    async function findAll (ctx) {
-      // Fetch all Todo's from the database and return as payload
-      const todos = await Todo.find({})
-      ctx.body = todos
-    }
+async function create(ctx) {
+  // Create New Todo from payload sent and save to database
+  const newTodo = new Todo(ctx.request.body)
+  const savedTodo = await newTodo.save()
+  ctx.body = savedTodo
+}
 
-    async function create (ctx) {
-      // Create New Todo from payload sent and save to database
-      const newTodo = new Todo(ctx.request.body)
-      const savedTodo = await newTodo.save()
-      ctx.body = savedTodo
-    }
+async function destroy(ctx) {
+  // Get id from url parameters and find Todo in database
+  const id = ctx.params.id
+  const todo = await Todo.findById(id)
 
-    async function destroy (ctx) {
-      // Get id from url parameters and find Todo in database
-      const id = ctx.params.id
-      const todo = await Todo.findById(id)
+  // Delete todo from database and return deleted object as reference
+  const deletedTodo = await todo.remove()
+  ctx.body = deletedTodo
+}
 
-      // Delete todo from database and return deleted object as reference
-      const deletedTodo = await todo.remove()
-      ctx.body = deletedTodo
-    }
+async function ml(ctx) {
+  // console.log(ctx.request.body)
+  const auth = "Bearer ZLChoye2zn7S4oCgRM90pgXGMxekVFb/dEho12+msmaHCFTspQG0FwZpnKcAyROU4T8qlo6TVFmikrECc6e0ng=="
+  const siteurl = "https://ussouthcentral.services.azureml.net/workspaces/b3c1c6d865b14529bf0d84b4698dcc3d/services/b2874694d8f440dd866c2dbc0c254194/execute?api-version=2.0&details=true";
+  var res = ""
 
-    async function update (ctx) {
-      // Find Todo based on id, then toggle done on/off
-      const id = ctx.params.id
-      const todo = await Todo.findById(id)
-      todo.done = !todo.done
+  try {
+    let r = await axios(siteurl, {
+      method: 'POST',
+      headers: {
+        'Authorization': auth,
+        'Content-Type': "application/json"
+      },
+      data: ctx.request.body,
+    })
 
-      // Update todo in database
-      const updatedTodo = await todo.save()
-      ctx.body = updatedTodo
-    }
+    ctx.body = r.data
 
-    module.exports = {
-      findAll,
-      create,
-      destroy,
-      update
-    }
+    //.Results.output1.value.Values[0][5]
+
+    // console.log(ctx.body)
+  }
+  catch (e) {
+    ctx.status = 500
+    ctx.body = e
+  }
+
+  return res
+}
+
+module.exports = {
+  create,
+  destroy,
+  ml
+}

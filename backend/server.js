@@ -10,30 +10,19 @@ const mongoose = require('mongoose');
 const app = new Koa()
 const router = new Router()
 
-app.use(Helmet())
-
 if (process.env.NODE_ENV === 'development') {
   app.use(Logger())
 }
 
 app.use(Cors())
-app.use(BodyParser({
-  enableTypes: ['json'],
-  jsonLimit: '5mb',
-  strict: true,
-  onerror: function (err, ctx) {
-    ctx.throw('body parse error', 422)
-  }
-}))
 
-app.use(respond())
-
-// API routes
 require('./routes')(router)
+
+app.use(BodyParser())
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-app.use(require('koa-static')('./build'))
+// app.use(require('koa-static')('./build'))
 
 mongoose.connect('mongodb://user:P4ssword!@ds046377.mlab.com:46377/headcountapp_mongodb')
 
